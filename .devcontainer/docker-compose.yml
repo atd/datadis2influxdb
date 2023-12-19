@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+
+    volumes:
+      - ../..:/workspaces:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    network_mode: service:db
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  db:
+    image: influxdb:latest
+    restart: unless-stopped
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: influxdb
+      DOCKER_INFLUXDB_INIT_PASSWORD: influxdb
+      DOCKER_INFLUXDB_INIT_ORG: influxdb
+      DOCKER_INFLUXDB_INIT_BUCKET: influxdb
+
+    # Add "forwardPorts": ["8086"] to **devcontainer.json** to forward InfluxDB locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+volumes:
+  influxdb-data:
