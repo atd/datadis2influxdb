@@ -1,0 +1,2 @@
+datadis==1.0.0
+influxdb==5.3.1
