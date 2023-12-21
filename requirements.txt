@@ -1,2 +1,2 @@
-datadis==1.0.0
-influxdb==5.3.1
+datadis @ git+https://github.com/atd/datadis
+influxdb-client=1.39.0
